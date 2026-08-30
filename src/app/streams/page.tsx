@@ -101,7 +101,7 @@ export default function Streams() {
                     </div>
                     <div>
                       <h3 className="font-heading font-black text-lg uppercase tracking-tight text-foreground">
-                        {stream.title}
+                        {(stream as any).title || `${stream.streamer} ile ${stream.game}`}
                       </h3>
                       <p className="text-xs font-bold text-muted-foreground uppercase">
                         {stream.streamer} • <span className="text-accent-muted">{stream.game}</span>

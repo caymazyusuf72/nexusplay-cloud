@@ -120,14 +120,14 @@ export default function PricingPage() {
                       )}
                     </div>
                     <p className="text-[11px] text-muted-foreground font-bold mt-1">
-                      {plan.sessionDuration} kesintisiz oturum süresi
+                      {plan.sessionLength || plan.sessionDuration} kesintisiz oturum süresi
                     </p>
                   </div>
 
                   {/* Features List */}
                   <div className="space-y-3 mb-8">
                     <p className="text-xs font-heading font-black uppercase text-foreground">Paket Özellikleri:</p>
-                    {plan.features.map((feat, i) => (
+                    {plan.features.map((feat: string, i: number) => (
                       <div key={i} className="flex items-start gap-2.5 text-xs font-bold text-foreground">
                         <CheckCircle2 size={16} className="text-accent-muted shrink-0 mt-0.5" />
                         <span>{feat}</span>

@@ -234,28 +234,31 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {categories.map((cat) => (
-              <motion.div
-                key={cat.id}
-                variants={fadeUp}
-                whileHover={{ y: shouldReduceMotion ? 0 : -4 }}
-                transition={{ duration: 0.15 }}
-              >
-                <Card className="h-full border-[3px] border-border rounded-none p-5 bg-secondary-background shadow-[4px_4px_0px_0px_var(--border)] hover:shadow-[6px_6px_0px_0px_var(--accent-muted)] hover:border-accent-muted transition-all cursor-pointer flex flex-col justify-between">
-                  <div className="mb-4 text-foreground">
-                    {IconMap[cat.icon] || <Gamepad2 size={30} />}
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-black text-lg uppercase tracking-tight text-foreground mb-1">
-                      {cat.name}
-                    </h3>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                      {cat.gameCount} Oyun Hazır
-                    </p>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+            {categories.map((cat: any) => {
+              const count = cat.gameCount || (cat.name === "Tümü" ? gameLibrary.length + 1 : gameLibrary.filter((g: any) => g.genre === cat.name).length);
+              return (
+                <motion.div
+                  key={cat.id}
+                  variants={fadeUp}
+                  whileHover={{ y: shouldReduceMotion ? 0 : -4 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Card className="h-full border-[3px] border-border rounded-none p-5 bg-secondary-background shadow-[4px_4px_0px_0px_var(--border)] hover:shadow-[6px_6px_0px_0px_var(--accent-muted)] hover:border-accent-muted transition-all cursor-pointer flex flex-col justify-between">
+                    <div className="mb-4 text-foreground">
+                      {IconMap[cat.icon] || <Gamepad2 size={30} />}
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-black text-lg uppercase tracking-tight text-foreground mb-1">
+                        {cat.name}
+                      </h3>
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        {count} Oyun Hazır
+                      </p>
+                    </div>
+                  </Card>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
@@ -434,7 +437,7 @@ export default function Home() {
                     <span className="text-xs font-bold text-muted-foreground">/ay</span>
                   </div>
                   <ul className="space-y-2.5 text-xs font-bold text-foreground mb-6">
-                    {plan.features.slice(0, 4).map((feat, i) => (
+                    {plan.features.slice(0, 4).map((feat: string, i: number) => (
                       <li key={i} className="flex items-center gap-2">
                         <CheckCircle2 size={14} className="text-accent-muted shrink-0" />
                         <span>{feat}</span>
@@ -465,7 +468,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {reviews.map((rev) => (
+            {reviews.map((rev: any) => (
               <div 
                 key={rev.id} 
                 className="border-[3px] border-border bg-secondary-background p-6 rounded-none shadow-[5px_5px_0px_0px_var(--border)] flex flex-col justify-between"
@@ -483,10 +486,10 @@ export default function Home() {
                 <div className="pt-3 border-t-2 border-border/20 flex items-center justify-between">
                   <div>
                     <h4 className="font-heading font-black text-xs uppercase text-foreground">{rev.name}</h4>
-                    <p className="text-[10px] text-muted-foreground">{rev.role}</p>
+                    <p className="text-[10px] text-muted-foreground">{rev.role || rev.tag}</p>
                   </div>
                   <Badge className="bg-background text-foreground border border-border text-[9px] rounded-none">
-                    {rev.tier}
+                    {rev.tier || rev.tag}
                   </Badge>
                 </div>
               </div>
@@ -508,17 +511,17 @@ export default function Home() {
 
           <div className="border-[3px] border-border bg-secondary-background p-6 shadow-[6px_6px_0px_0px_var(--border)]">
             <Accordion type="single" collapsible className="w-full space-y-3">
-              {faqs.map((faq) => (
+              {faqs.map((faq: any, idx: number) => (
                 <AccordionItem 
-                  key={faq.id} 
-                  value={faq.id} 
+                  key={idx} 
+                  value={`faq-${idx}`} 
                   className="border-2 border-border bg-background p-3 shadow-[2px_2px_0px_0px_var(--border)]"
                 >
                   <AccordionTrigger className="font-heading font-black text-sm uppercase text-foreground hover:no-underline py-1 text-left">
-                    {faq.question}
+                    {faq.q || faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground font-medium pt-2 leading-relaxed">
-                    {faq.answer}
+                    {faq.a || faq.answer}
                   </AccordionContent>
                 </AccordionItem>
               ))}

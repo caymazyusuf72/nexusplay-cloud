@@ -33,9 +33,9 @@ export default function SupportPage() {
   const [message, setMessage] = useState("");
 
   const filteredFaqs = faqs.filter(
-    (f) =>
-      f.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      f.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    (f: any) =>
+      (f.q || f.question || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (f.a || f.answer || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleSubmitTicket = (e: React.FormEvent) => {
@@ -81,17 +81,17 @@ export default function SupportPage() {
           </h3>
 
           <Accordion type="single" collapsible className="space-y-4">
-            {filteredFaqs.map((faq) => (
+            {filteredFaqs.map((faq: any, idx: number) => (
               <AccordionItem
-                key={faq.id}
-                value={faq.id}
+                key={idx}
+                value={`faq-${idx}`}
                 className="border-2 border-border bg-background p-4 shadow-[3px_3px_0px_0px_var(--border)]"
               >
                 <AccordionTrigger className="font-heading font-black text-base uppercase text-foreground hover:no-underline py-1 text-left">
-                  {faq.question}
+                  {faq.q || faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground font-medium pt-3 leading-relaxed border-t border-border/20 mt-2">
-                  {faq.answer}
+                  {faq.a || faq.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
