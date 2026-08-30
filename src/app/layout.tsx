@@ -9,6 +9,7 @@ import ScrollToTop from "@/components/app/scroll-to-top"
 import SetStylingPref from "@/components/app/set-styling-pref"
 import { ThemeProvider } from "@/components/app/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
+import GlowCursor from "@/components/ui/glow-cursor"
 
 const fontSans = Outfit({
   subsets: ["latin"],
@@ -18,39 +19,28 @@ const fontSans = Outfit({
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "NexusPlay Cloud - Future of Cloud Gaming",
-    template: `%s - NexusPlay`,
+    default: "NexusPlay Cloud - RTX 4080 Bulut Oyun Platformu",
+    template: `%s - NexusPlay Cloud`,
   },
   description:
-    "A collection of neobrutalism-styled components based on shadcn/ui.",
+    "Yüksek donanımlı RTX 4080 bulut sunucularda 4K 120 FPS ultra düşük gecikmeli WebRTC akışı ile indirme yapmadan anında oyun oyna.",
   keywords: [
-    "neobrutalism",
-    "neobrutalism components",
-    "neobrutalism tailwind",
-    "react neobrutalism",
-    "react tailwind components",
-    "shadcn components",
-    "shadcn neobrutalism",
+    "bulut oyun",
+    "cloud gaming",
+    "nexusplay",
+    "rtx 4080 cloud",
+    "webrtc gaming",
+    "steam cloud",
+    "game pass cloud"
   ],
-  authors: [{ name: "Samuel Breznjak", url: "https://github.com/ekmas" }],
+  authors: [{ name: "NexusPlay Cloud Team" }],
   openGraph: {
     type: "website",
     description:
-      "Geleceğin acımasız sokaklarında hayatta kal. Işın izleme teknolojisiyle geliştirilmiş grafikleriyle şimdi bulutta oyna.",
-    images: ["https://www.neobrutalism.dev/preview.png"],
-    url: "https://www.nexusplay.cloud/",
+      "4K 120 FPS sıfır indirme süresiyle yeni nesil bulut oyunculuk deneyimi.",
+    url: "https://nexusplay-cloud.vercel.app",
     title: "NexusPlay Cloud Gaming",
-  },
-  metadataBase: new URL("https://www.neobrutalism.dev/"),
-  twitter: {
-    card: "summary_large_image",
-    title: "Neobrutalism components - Start making neobrutalism layouts",
-    description:
-      "A collection of neobrutalism-styled components based on shadcn/ui.",
-    images: ["https://www.neobrutalism.dev/preview.png"],
-    creator: "@samuelbreznjak",
-  },
+  }
 }
 
 export default function RootLayout({
@@ -59,12 +49,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html className="scroll-smooth" suppressHydrationWarning lang="en">
+    <html className="scroll-smooth" suppressHydrationWarning lang="tr">
       <body className={fontSans.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange
+        >
+          <GlowCursor
+            color="#d46c4e"
+            secondaryColor="#e08a68"
+            trailLength={32}
+            trailWidth={6}
+            glowIntensity={1.7}
+            brightness={1.2}
+            blendMode="screen"
           >
             <NavbarWrapper>
               <Navbar />
@@ -73,7 +72,8 @@ export default function RootLayout({
             <SetStylingPref />
             <ScrollToTop />
             <Toaster />
-          </ThemeProvider>
+          </GlowCursor>
+        </ThemeProvider>
       </body>
     </html>
   )
