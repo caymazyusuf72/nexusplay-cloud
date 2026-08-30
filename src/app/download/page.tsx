@@ -15,6 +15,7 @@ import {
   Laptop, 
   Wifi,
 } from "lucide-react";
+import TextLoop from "@/components/ui/text-loop";
 
 export default function DownloadPage() {
   const { supportedDevices } = cloudGamingData;
@@ -101,6 +102,27 @@ export default function DownloadPage() {
               </Button>
             </motion.div>
           ))}
+        </div>
+
+        {/* ECOSYSTEM TEXT LOOP */}
+        <div className="max-w-6xl mx-auto mb-16 overflow-hidden border-[3px] border-border bg-secondary-background shadow-[6px_6px_0px_0px_var(--border)] py-4">
+          <TextLoop
+            text="HER CİHAZDA ✦ WINDOWS ✦ MACOS ✦ ANDROID ✦ IOS SAFARI PWA ✦ SMART TV ✦ STEAM DECK"
+            shape="wave"
+            speed={80}
+            direction="forward"
+            separator="✦"
+            curviness={45}
+            fontSize={30}
+            fontWeight={900}
+            letterSpacing={2}
+            uppercase
+            color="#ffffff"
+            ribbon
+            ribbonColor="var(--main)"
+            ribbonWidth={68}
+            pauseOnHover
+          />
         </div>
 
         {/* System & Bandwidth Requirements Banner */}

@@ -37,6 +37,7 @@ import {
   AccordionTrigger, 
   AccordionContent 
 } from "@/components/ui/accordion";
+import TextLoop from "@/components/ui/text-loop";
 
 const IconMap: Record<string, React.ReactNode> = {
   Gamepad2: <Gamepad2 size={30} />,
@@ -216,6 +217,27 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* INTERACTIVE TEXT LOOP RIBBON 1 */}
+        <section className="mb-20 overflow-hidden border-[3px] border-border bg-secondary-background shadow-[6px_6px_0px_0px_var(--border)] py-4">
+          <TextLoop
+            text="NEXUSPLAY CLOUD ✦ RTX 4080 RIG ✦ 4K 120 FPS ✦ SIFIR GECİKME ✦ SIFIR İNDİRME ✦ WEBRTC ENGINE"
+            shape="wave"
+            speed={85}
+            direction="forward"
+            separator="✦"
+            curviness={50}
+            fontSize={32}
+            fontWeight={900}
+            letterSpacing={2}
+            uppercase
+            color="#ffffff"
+            ribbon
+            ribbonColor="var(--main)"
+            ribbonWidth={72}
+            pauseOnHover
+          />
         </section>
 
         {/* CATEGORIES SECTION */}
@@ -495,6 +517,27 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* INTERACTIVE TEXT LOOP RIBBON 2 */}
+        <section className="mb-20 overflow-hidden border-[3px] border-border bg-secondary-background shadow-[6px_6px_0px_0px_var(--border)] py-4">
+          <TextLoop
+            text="GELECEĞİN BULUT OYUN PLATFORMU ✦ WEBRTC ✦ STEAM ✦ EPIC ✦ XBOX ✦ HER EKRANDA ANINDA BAŞLA"
+            shape="arch"
+            speed={70}
+            direction="reverse"
+            separator="✦"
+            curviness={40}
+            fontSize={28}
+            fontWeight={800}
+            letterSpacing={2}
+            uppercase
+            color="#ffffff"
+            ribbon
+            ribbonColor="var(--main)"
+            ribbonWidth={64}
+            pauseOnHover
+          />
         </section>
 
         {/* FREQUENTLY ASKED QUESTIONS */}
