@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, CSSProperties } from "react";
+import React, { useEffect, useRef, useState, CSSProperties } from "react";
+import { useTheme } from "next-themes";
 import { Mesh, Program, Renderer, Triangle } from "ogl";
 import "./GlowCursor.css";
 
@@ -152,23 +153,23 @@ export interface GlowCursorProps {
 }
 
 export default function GlowCursor({
-  color = "#d46c4e",
-  secondaryColor = "#e08a68",
+  color,
+  secondaryColor,
   trailLength = 36,
-  trailWidth = 7,
+  trailWidth,
   trailTaper = 0.8,
   followSpeed = 0.18,
-  glowIntensity = 1.8,
+  glowIntensity,
   glowSpread = 1.1,
   hotspot = 0.6,
-  brightness = 1.2,
-  opacity = 0.95,
+  brightness,
+  opacity,
   pulseSpeed = 1.0,
   noiseStrength = 0.03,
   idleFade = true,
   idleTimeout = 700,
   fadeDuration = 800,
-  blendMode = "screen",
+  blendMode,
   maxDevicePixelRatio = 1.5,
   enabled = true,
   children,
@@ -178,27 +179,45 @@ export default function GlowCursor({
 }: GlowCursorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const propsRef = useRef<GlowCursorProps>({});
+  const propsRef = useRef<any>({});
+
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted ? resolvedTheme === "dark" : false;
+
+  // Compute theme-adaptive defaults
+  const effectiveColor = color || (isDark ? "#ff7d59" : "#b84e32");
+  const effectiveSecondaryColor = secondaryColor || (isDark ? "#f59e0b" : "#d46c4e");
+  const effectiveBlendMode = blendMode || (isDark ? "screen" : "normal");
+  const effectiveBrightness = brightness ?? (isDark ? 1.3 : 1.05);
+  const effectiveOpacity = opacity ?? (isDark ? 1.0 : 0.88);
+  const effectiveGlowIntensity = glowIntensity ?? (isDark ? 2.0 : 1.25);
+  const effectiveTrailWidth = trailWidth ?? (isDark ? 7 : 6);
 
   propsRef.current = {
-    color,
-    secondaryColor,
+    color: effectiveColor,
+    secondaryColor: effectiveSecondaryColor,
     trailLength,
-    trailWidth,
+    trailWidth: effectiveTrailWidth,
     trailTaper,
     followSpeed,
-    glowIntensity,
+    glowIntensity: effectiveGlowIntensity,
     glowSpread,
     hotspot,
-    brightness,
-    opacity,
+    brightness: effectiveBrightness,
+    opacity: effectiveOpacity,
     pulseSpeed,
     noiseStrength,
     idleFade,
     idleTimeout,
     fadeDuration,
     maxDevicePixelRatio,
-    blendMode,
+    blendMode: effectiveBlendMode,
     enabled
   };
 
@@ -241,11 +260,11 @@ export default function GlowCursor({
         uResolution: { value: [window.innerWidth, window.innerHeight] },
         uPoints: { value: pointData },
         uPointCount: { value: initialConfig.trailLength || 36 },
-        uColor: { value: hexToRgb(initialConfig.color || "#d46c4e") },
-        uSecondaryColor: { value: hexToRgb(initialConfig.secondaryColor || "#e08a68") },
-        uTrailWidth: { value: initialConfig.trailWidth || 7 },
+        uColor: { value: hexToRgb(initialConfig.color) },
+        uSecondaryColor: { value: hexToRgb(initialConfig.secondaryColor) },
+        uTrailWidth: { value: initialConfig.trailWidth || 6 },
         uTaper: { value: initialConfig.trailTaper || 0.8 },
-        uGlowIntensity: { value: initialConfig.glowIntensity || 1.8 },
+        uGlowIntensity: { value: initialConfig.glowIntensity || 1.5 },
         uGlowSpread: { value: initialConfig.glowSpread || 1.1 },
         uHotspot: { value: initialConfig.hotspot || 0.6 },
         uBrightness: { value: initialConfig.brightness || 1.2 },
@@ -343,11 +362,11 @@ export default function GlowCursor({
       fade += (fadeTarget - fade) * Math.min(1, fadeStep * 7);
 
       program.uniforms.uPointCount.value = clamp(Math.round(config.trailLength ?? 36), 2, MAX_POINTS);
-      program.uniforms.uColor.value = hexToRgb(config.color || "#d46c4e");
-      program.uniforms.uSecondaryColor.value = hexToRgb(config.secondaryColor || "#e08a68");
-      program.uniforms.uTrailWidth.value = Math.max(config.trailWidth ?? 7, 0.1);
+      program.uniforms.uColor.value = hexToRgb(config.color);
+      program.uniforms.uSecondaryColor.value = hexToRgb(config.secondaryColor);
+      program.uniforms.uTrailWidth.value = Math.max(config.trailWidth ?? 6, 0.1);
       program.uniforms.uTaper.value = clamp(config.trailTaper ?? 0.8, 0, 1);
-      program.uniforms.uGlowIntensity.value = Math.max(config.glowIntensity ?? 1.8, 0);
+      program.uniforms.uGlowIntensity.value = Math.max(config.glowIntensity ?? 1.5, 0);
       program.uniforms.uGlowSpread.value = Math.max(config.glowSpread ?? 1.1, 0);
       program.uniforms.uHotspot.value = clamp(config.hotspot ?? 0.6, 0, 1);
       program.uniforms.uBrightness.value = Math.max(config.brightness ?? 1.2, 0);
@@ -383,7 +402,12 @@ export default function GlowCursor({
 
   return (
     <div ref={containerRef} className={`glow-cursor${className ? ` ${className}` : ""}`} style={style} {...rest}>
-      <canvas ref={canvasRef} className="glow-cursor__canvas" style={{ mixBlendMode: blendMode }} aria-hidden="true" />
+      <canvas
+        ref={canvasRef}
+        className="glow-cursor__canvas"
+        style={{ mixBlendMode: effectiveBlendMode }}
+        aria-hidden="true"
+      />
       {children && <div className="glow-cursor__content">{children}</div>}
     </div>
   );

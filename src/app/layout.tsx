@@ -57,13 +57,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <GlowCursor
-            color="#d46c4e"
-            secondaryColor="#e08a68"
             trailLength={32}
             trailWidth={6}
-            glowIntensity={1.7}
-            brightness={1.2}
-            blendMode="screen"
           >
             <NavbarWrapper>
               <Navbar />
