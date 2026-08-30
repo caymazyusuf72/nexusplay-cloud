@@ -1,0 +1,54 @@
+/* BrutAdmin Neo-Brutalist Theme Utilities & Animations */
+
+.ba-shadow {
+  box-shadow: 4px 4px 0 0 #0a0a0a;
+}
+
+.ba-shadow-sm {
+  box-shadow: 2px 2px 0 0 #0a0a0a;
+}
+
+.ba-shadow-lg {
+  box-shadow: 6px 6px 0 0 #0a0a0a;
+}
+
+.ba-press {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ba-press:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #0a0a0a;
+}
+
+.ba-press:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 #0a0a0a;
+}
+
+@keyframes ba-bar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.ba-bar {
+  transform-origin: bottom;
+  animation: ba-bar 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes ba-draw {
+  from {
+    stroke-dashoffset: 251.3px;
+  }
+  to {
+    stroke-dashoffset: 61.44px;
+  }
+}
+
+.ba-gauge {
+  animation: ba-draw 1.3s ease-out both;
+}
