@@ -37,12 +37,12 @@ export default function GameDetailModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl w-full p-0 overflow-hidden bg-background border-[3px] border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <DialogContent className="max-w-3xl w-full p-0 overflow-hidden bg-background border-[3px] border-border rounded-none shadow-[8px_8px_0px_0px_var(--border)] text-foreground">
         <DialogTitle className="sr-only">{game.title} - Detaylar ve Bulut Ayarları</DialogTitle>
         <DialogDescription className="sr-only">Oyun detayları, Ray Tracing ayarları ve bulut önayarları</DialogDescription>
 
         {/* Hero Header Banner */}
-        <div className="relative h-60 overflow-hidden border-b-[3px] border-black bg-black">
+        <div className="relative h-60 overflow-hidden border-b-[3px] border-border bg-black">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={game.coverImage || game.thumbnail}
@@ -74,10 +74,10 @@ export default function GameDetailModal({
         </div>
 
         {/* Configuration Body */}
-        <div className="p-6 space-y-6 max-h-[400px] overflow-y-auto">
+        <div className="p-6 space-y-6 max-h-[400px] overflow-y-auto bg-background">
           {/* Cloud Stream Quality Presets */}
           <div>
-            <h4 className="font-heading font-bold text-sm uppercase mb-3 flex items-center gap-2">
+            <h4 className="font-heading font-bold text-sm uppercase mb-3 flex items-center gap-2 text-foreground">
               <Layers size={16} className="text-accent-muted" /> Bulut Akış Profili (Stream Profile)
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -89,10 +89,10 @@ export default function GameDetailModal({
                 <div
                   key={preset.id}
                   onClick={() => setQualityPreset(preset.id as any)}
-                  className={`p-3 border-2 border-black cursor-pointer transition-all ${
+                  className={`p-3 border-2 border-border cursor-pointer transition-all ${
                     qualityPreset === preset.id
-                      ? "bg-accent-muted text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                      : "bg-white text-black hover:bg-gray-100"
+                      ? "bg-accent-muted text-white shadow-[3px_3px_0px_0px_var(--border)]"
+                      : "bg-secondary-background text-foreground hover:bg-black/5 dark:hover:bg-white/5"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
@@ -107,33 +107,33 @@ export default function GameDetailModal({
           </div>
 
           {/* Graphics Rig Switches */}
-          <div className="border-2 border-black bg-white p-4">
-            <h4 className="font-heading font-bold text-sm uppercase mb-3 flex items-center gap-2">
+          <div className="border-2 border-border bg-secondary-background p-4">
+            <h4 className="font-heading font-bold text-sm uppercase mb-3 flex items-center gap-2 text-foreground">
               <Cpu size={16} className="text-accent-muted" /> Donanım Optimizasyonu (RTX 4080)
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div 
                 onClick={() => setRayTracing(!rayTracing)}
-                className="flex items-center justify-between p-3 border border-black bg-background cursor-pointer hover:bg-gray-100"
+                className="flex items-center justify-between p-3 border border-border bg-background cursor-pointer hover:bg-black/5 dark:hover:bg-white/5"
               >
                 <div>
-                  <p className="font-bold text-xs uppercase">Ray Tracing (Işın İzleme)</p>
-                  <p className="text-[10px] text-gray-600">Ultra gerçekçi yansıma & gölgeler</p>
+                  <p className="font-bold text-xs uppercase text-foreground">Ray Tracing (Işın İzleme)</p>
+                  <p className="text-[10px] text-muted-foreground">Ultra gerçekçi yansıma & gölgeler</p>
                 </div>
-                <div className={`size-5 border-2 border-black flex items-center justify-center font-bold text-xs ${rayTracing ? "bg-accent-muted text-white" : "bg-white"}`}>
+                <div className={`size-5 border-2 border-border flex items-center justify-center font-bold text-xs ${rayTracing ? "bg-accent-muted text-white" : "bg-secondary-background text-foreground"}`}>
                   {rayTracing && "✓"}
                 </div>
               </div>
 
               <div 
                 onClick={() => setDlss(!dlss)}
-                className="flex items-center justify-between p-3 border border-black bg-background cursor-pointer hover:bg-gray-100"
+                className="flex items-center justify-between p-3 border border-border bg-background cursor-pointer hover:bg-black/5 dark:hover:bg-white/5"
               >
                 <div>
-                  <p className="font-bold text-xs uppercase">DLSS 3.5 Frame Gen</p>
-                  <p className="text-[10px] text-gray-600">Yapay zeka kare üretimi & düşük gecikme</p>
+                  <p className="font-bold text-xs uppercase text-foreground">DLSS 3.5 Frame Gen</p>
+                  <p className="text-[10px] text-muted-foreground">Yapay zeka kare üretimi & düşük gecikme</p>
                 </div>
-                <div className={`size-5 border-2 border-black flex items-center justify-center font-bold text-xs ${dlss ? "bg-accent-muted text-white" : "bg-white"}`}>
+                <div className={`size-5 border-2 border-border flex items-center justify-center font-bold text-xs ${dlss ? "bg-accent-muted text-white" : "bg-secondary-background text-foreground"}`}>
                   {dlss && "✓"}
                 </div>
               </div>
@@ -141,18 +141,18 @@ export default function GameDetailModal({
           </div>
 
           {/* Cloud Requirements info */}
-          <div className="flex flex-wrap gap-4 text-xs font-bold text-gray-700 bg-gray-100 border-2 border-black p-3 justify-between">
-            <span className="flex items-center gap-1.5"><Activity size={14} /> Tahmini Yükleme: {game.estimatedLoadTime || "3 saniye"}</span>
-            <span className="flex items-center gap-1.5"><ShieldCheck size={14} /> Bulut Kaydı (Cloud Save): Aktif</span>
-            <span className="flex items-center gap-1.5"><Gamepad2 size={14} /> Gamepad Desteği: Tam Uyumlu</span>
+          <div className="flex flex-wrap gap-4 text-xs font-bold text-foreground bg-secondary-background border-2 border-border p-3 justify-between">
+            <span className="flex items-center gap-1.5"><Activity size={14} className="text-accent-muted" /> Tahmini Yükleme: {game.estimatedLoadTime || "3 saniye"}</span>
+            <span className="flex items-center gap-1.5"><ShieldCheck size={14} className="text-accent-muted" /> Bulut Kaydı (Cloud Save): Aktif</span>
+            <span className="flex items-center gap-1.5"><Gamepad2 size={14} className="text-accent-muted" /> Gamepad Desteği: Tam Uyumlu</span>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="bg-white border-t-[3px] border-black p-4 flex items-center justify-between">
+        <div className="bg-secondary-background border-t-[3px] border-border p-4 flex items-center justify-between">
           <Button
             onClick={onClose}
-            className="border-2 border-black bg-background text-black hover:bg-black hover:text-white rounded-none font-bold uppercase text-xs px-5 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="border-2 border-border bg-background text-foreground hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white rounded-none font-bold uppercase text-xs px-5 py-2 shadow-[2px_2px_0px_0px_var(--border)]"
           >
             Kapat
           </Button>
@@ -162,7 +162,7 @@ export default function GameDetailModal({
               onClose();
               onPlay(game);
             }}
-            className="bg-accent-muted text-white border-2 border-black rounded-none font-heading font-black text-sm uppercase px-8 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-black hover:text-white flex items-center gap-2"
+            className="bg-accent-muted text-white border-2 border-border rounded-none font-heading font-black text-sm uppercase px-8 py-3 shadow-[4px_4px_0px_0px_var(--border)] hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white flex items-center gap-2"
           >
             <Play size={16} fill="currentColor" /> Bulutta Başlat
           </Button>

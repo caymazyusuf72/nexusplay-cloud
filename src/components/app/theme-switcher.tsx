@@ -1,47 +1,40 @@
-"use client"
+"use client";
 
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-
-import * as React from "react"
-
-import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 
 export function ThemeSwitcher() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
-  const handleThemeChange = () => {
-    const newTheme = theme === "light" ? "dark" : "light"
-    setTheme(newTheme)
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    setTimeout(() => {
-      const r = document.querySelector(":root") as HTMLElement
-      if (newTheme === "dark") {
-        r.style.setProperty(
-          "--background",
-          r.style.getPropertyValue("--dark-background"),
-        )
-        r.style.setProperty("--main", r.style.getPropertyValue("--dark-main"))
-      } else {
-        r.style.setProperty(
-          "--background",
-          r.style.getPropertyValue("--light-background"),
-        )
-        r.style.setProperty("--main", r.style.getPropertyValue("--light-main"))
-      }
-    }, 0)
+  if (!mounted) {
+    return (
+      <Button className="size-10 p-0 border-[3px] border-border bg-secondary-background rounded-none shadow-[2px_2px_0px_0px_var(--border)] text-foreground">
+        <Sun className="size-5" />
+      </Button>
+    );
   }
 
+  const isDark = resolvedTheme === "dark";
+
   return (
-    <>
-      <Button
-        className="size-9 p-0 [&_svg]:size-5 shadow-nav hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none bg-secondary-background"
-        onClick={handleThemeChange}
-      >
-        <Sun className="hidden dark:inline stroke-foreground" />
-        <Moon className="inline dark:hidden stroke-foreground" />
-        <span className="sr-only">Toggle theme</span>
-      </Button>
-    </>
-  )
+    <Button
+      className="size-10 p-0 border-[3px] border-border bg-secondary-background rounded-none shadow-[2px_2px_0px_0px_var(--border)] hover:bg-accent-muted hover:text-white transition-all text-foreground"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      title={isDark ? "Açık Mod'a Geç" : "Koyu Mod'a Geç"}
+    >
+      {isDark ? (
+        <Sun className="size-5 stroke-foreground" />
+      ) : (
+        <Moon className="size-5 stroke-foreground" />
+      )}
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
 }

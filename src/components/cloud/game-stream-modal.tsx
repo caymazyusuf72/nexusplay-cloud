@@ -95,143 +95,126 @@ export default function GameStreamModal({ isOpen, onClose, game }: GameStreamMod
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className={`max-w-5xl w-full p-0 overflow-hidden bg-background border-[3px] border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${isFullscreen ? "fixed inset-0 max-w-none w-screen h-screen z-[100]" : ""}`}>
+      <DialogContent className={`max-w-5xl w-full p-0 overflow-hidden bg-background border-[3px] border-border rounded-none shadow-[8px_8px_0px_0px_var(--border)] text-foreground ${isFullscreen ? "fixed inset-0 max-w-none w-screen h-screen z-[100]" : ""}`}>
         <DialogTitle className="sr-only">{game.title} - Cloud Gaming Session</DialogTitle>
         <DialogDescription className="sr-only">Live interactive cloud gaming session for {game.title}</DialogDescription>
 
-        {/* Top Control Header */}
-        <div className="bg-black text-white px-4 py-3 border-b-[3px] border-black flex items-center justify-between">
+        {/* Modal Top Control Bar */}
+        <div className="bg-secondary-background text-foreground px-4 py-3 border-b-[3px] border-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="size-3 bg-accent-muted rounded-full animate-pulse"></span>
-            <span className="font-heading font-bold text-sm tracking-wider uppercase">{game.title}</span>
-            <Badge className="bg-white/20 text-white rounded-none border border-white/30 text-[10px] font-bold">
-              RTX 4080 RIG
-            </Badge>
+            <div className="size-3 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="font-heading font-black text-sm uppercase tracking-wide">{game.title}</span>
+            <span className="text-xs text-muted-foreground font-mono hidden sm:inline">• Frankfurt TR-1 Rig</span>
           </div>
 
           <div className="flex items-center gap-2">
-            {stage === "streaming" && (
-              <>
-                <div className="hidden sm:flex items-center gap-4 text-xs font-mono text-gray-300 mr-4">
-                  <span className="flex items-center gap-1 text-white font-bold">
-                    <Activity size={13} className="text-accent-muted" /> {fps} FPS
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Wifi size={13} /> {ping}ms
-                  </span>
-                  <span>{bitrate} Mbps</span>
-                </div>
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-1.5 bg-background text-foreground hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white transition-colors border border-border"
+              title={isMuted ? "Sesi Aç" : "Sesi Kapat"}
+            >
+              {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            </button>
 
-                <button 
-                  onClick={() => setIsMuted(!isMuted)} 
-                  className="p-1.5 hover:bg-white/20 transition-colors border border-white/30 text-white"
-                  title={isMuted ? "Unmute" : "Mute"}
-                >
-                  {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                </button>
+            <button
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="p-1.5 bg-background text-foreground hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white transition-colors border border-border"
+              title={isFullscreen ? "Küçült" : "Tam Ekran"}
+            >
+              {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+            </button>
 
-                <button 
-                  onClick={() => setIsFullscreen(!isFullscreen)} 
-                  className="p-1.5 hover:bg-white/20 transition-colors border border-white/30 text-white"
-                  title="Toggle Fullscreen"
-                >
-                  {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-                </button>
-              </>
-            )}
-
-            <button 
+            <button
               onClick={onClose}
-              className="p-1.5 bg-accent-muted text-white hover:bg-white hover:text-black transition-colors border border-black font-bold"
-              title="Exit Game Session"
+              className="p-1.5 bg-accent-muted text-white hover:bg-black dark:hover:bg-white dark:hover:text-black transition-colors border border-border font-bold ml-2"
+              title="Oturumu Sonlandır"
             >
               <X size={16} />
             </button>
           </div>
         </div>
 
-        {/* Main Interactive Screen Area */}
-        <div className="relative bg-black min-h-[420px] md:min-h-[540px] flex items-center justify-center overflow-hidden">
+        {/* Stream Viewport & Stage Manager */}
+        <div className={`relative bg-black flex flex-col items-center justify-center overflow-hidden ${isFullscreen ? "h-[calc(100vh-50px)]" : "h-[480px] md:h-[540px]"}`}>
           {stage !== "streaming" ? (
-            /* Loading & Allocation Screen */
-            <div className="flex flex-col items-center justify-center p-8 text-center max-w-md w-full">
-              <div className="size-20 bg-white border-[3px] border-black flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(212,108,78,1)] animate-bounce">
-                <Cpu size={36} className="text-black" />
+            /* Allocation & Handshake loader */
+            <div className="text-center p-8 max-w-md w-full text-white z-10">
+              <div className="size-20 border-[3px] border-white bg-accent-muted flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+                {stage === "allocating" ? (
+                  <Cpu size={36} className="animate-pulse" />
+                ) : (
+                  <Wifi size={36} className="animate-bounce" />
+                )}
               </div>
 
-              <h3 className="font-heading font-black text-2xl uppercase tracking-tight text-white mb-2">
-                {stage === "allocating" ? "Rig Tahsis Ediliyor..." : "WebRTC Bağlantısı Kuruluyor..."}
+              <h3 className="text-2xl font-heading font-black uppercase mb-2">
+                {stage === "allocating" ? "RTX 4080 Rig Tahsis Ediliyor" : "WebRTC Bağlantısı Kuruluyor"}
               </h3>
-              <p className="text-gray-400 text-sm mb-6">
-                {stage === "allocating" ? "Frankfurt TR-1 veri merkezinde RTX 4080 slotu rezerve ediliyor." : "Ultra düşük gecikmeli 4K 120FPS video akışı başlatılıyor."}
+              <p className="text-xs text-gray-300 font-mono mb-6">
+                {stage === "allocating"
+                  ? "Bulut sunucusunda sanal bellek ve GPU çekirdekleri ayrılıyor..."
+                  : "Ultra düşük gecikmeli görüntü akış protokolü başlatılıyor..."}
               </p>
 
-              {/* Brutalist Progress Bar */}
-              <div className="w-full bg-gray-800 border-2 border-white/50 h-5 p-0.5 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
-                <div 
-                  className="bg-accent-muted h-full transition-all duration-500 ease-out"
+              {/* Neobrutalist Progress Bar */}
+              <div className="w-full h-5 border-2 border-white bg-neutral-900 p-0.5 mb-2">
+                <div
+                  className="h-full bg-accent-muted transition-all duration-500 ease-out"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
-
-              <div className="mt-4 flex items-center justify-between w-full text-xs font-mono text-gray-400">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 size={13} className={progress >= 25 ? "text-accent-muted" : "text-gray-600"} /> Rig Ayrıldı
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 size={13} className={progress >= 65 ? "text-accent-muted" : "text-gray-600"} /> Ağ Doğrulandı
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 size={13} className={progress >= 100 ? "text-accent-muted" : "text-gray-600"} /> Akış Hazır
-                </span>
-              </div>
+              <span className="text-xs font-mono font-bold text-gray-400">%{progress} Tamamlandı</span>
             </div>
           ) : (
-            /* Active Game Stream Viewport */
-            <div className="relative w-full h-full flex flex-col items-center justify-center group">
-              {/* Simulated Game Video Background */}
+            /* Live Stream Active */
+            <div className="relative w-full h-full">
+              {/* Fake Interactive Game Canvas / Background Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src={game.coverImage || game.thumbnail} 
+              <img
+                src={game.coverImage || game.thumbnail}
                 alt={game.title}
-                className="w-full h-full object-cover opacity-90 transition-all duration-700"
+                className="w-full h-full object-cover select-none"
               />
+              <div className="absolute inset-0 bg-black/10"></div>
 
-              {/* In-Game Brutalist Stream Overlay (HUD) */}
-              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-sm border-2 border-white text-white p-3 shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] pointer-events-none">
-                <div className="flex items-center gap-3 text-xs font-mono">
-                  <span className="font-bold text-accent-muted uppercase">Nexus Stream</span>
-                  <span>4K UHD (3840x2160)</span>
-                  <span>HDR: ON</span>
-                  <span>DLSS 3.5 Frame Gen</span>
+              {/* Realtime Stream HUD Overlay (Top-Left) */}
+              <div className="absolute top-4 left-4 z-20 flex flex-wrap gap-2">
+                <div className="bg-black/90 text-white border-2 border-white px-2.5 py-1 text-xs font-mono flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span className="size-2 rounded-full bg-green-500 animate-pulse"></span>
+                  <span className="font-bold text-green-400">{fps} FPS</span>
+                </div>
+
+                <div className="bg-black/90 text-white border-2 border-white px-2.5 py-1 text-xs font-mono flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span>PING:</span>
+                  <span className="font-bold text-yellow-400">{ping} ms</span>
+                </div>
+
+                <div className="bg-black/90 text-white border-2 border-white px-2.5 py-1 text-xs font-mono flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span>BITRATE:</span>
+                  <span className="font-bold">{bitrate} Mbps</span>
+                </div>
+
+                <div className="bg-black/90 text-white border-2 border-white px-2.5 py-1 text-xs font-mono flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span>4K 120Hz HDR</span>
                 </div>
               </div>
 
-              {/* Interactive Virtual Controls Overlay */}
-              <div className="absolute bottom-6 left-6 bg-black/85 backdrop-blur-md border-2 border-white p-4 shadow-[4px_4px_0px_0px_rgba(212,108,78,1)] text-white max-w-sm hidden sm:block">
-                <div className="flex items-center gap-2 mb-2 font-heading font-bold text-xs uppercase tracking-wider text-accent-muted">
-                  <Gamepad2 size={16} /> Giriş Testi (Klavye / Gamepad)
-                </div>
-                <div className="flex gap-2 text-xs font-mono">
-                  {["W", "A", "S", "D", "SPACE", "SHIFT"].map((k) => (
-                    <div 
-                      key={k}
-                      className={`px-2 py-1 border border-white text-center font-bold transition-all ${pressedKey === k ? "bg-accent-muted text-white translate-y-0.5" : "bg-black/50 text-gray-300"}`}
-                    >
-                      {k}
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[10px] text-gray-400 mt-2">
-                  Klavyenizdeki tuşlara basarak bulut tepki süresini test edebilirsiniz.
-                </p>
+              {/* Keyboard Reactivity Display (Bottom-Center) */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 bg-black/80 border-2 border-white px-4 py-2 flex items-center gap-3 text-white text-xs font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <Gamepad2 size={16} className="text-accent-muted" />
+                <span>Giriş Testi: Klavye / Gamepad tuşlarına basın</span>
+                {pressedKey && (
+                  <span className="bg-accent-muted text-white px-2 py-0.5 border border-white font-mono text-xs animate-ping">
+                    {pressedKey}
+                  </span>
+                )}
               </div>
 
-              {/* Game Pause / Resume Menu trigger */}
-              <div className="absolute bottom-6 right-6 flex items-center gap-3">
-                <Button 
+              {/* End Session Button (Bottom-Right) */}
+              <div className="absolute bottom-6 right-6 z-20">
+                <Button
                   onClick={onClose}
-                  className="bg-accent-muted text-white border-2 border-black rounded-none font-heading font-bold uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-white hover:text-black text-xs py-2 px-4"
+                  className="bg-accent-muted text-white border-2 border-white rounded-none font-heading font-black text-xs uppercase px-4 py-2 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-white hover:text-black"
                 >
                   Oturumu Kapat
                 </Button>

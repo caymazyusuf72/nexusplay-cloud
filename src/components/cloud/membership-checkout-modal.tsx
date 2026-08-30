@@ -11,7 +11,6 @@ import {
   Zap, 
   CheckCircle2, 
   X, 
-  Sparkles,
   Lock
 } from "lucide-react";
 
@@ -53,19 +52,19 @@ export default function MembershipCheckoutModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-w-lg w-full p-0 overflow-hidden bg-background border-[3px] border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <DialogContent className="max-w-lg w-full p-0 overflow-hidden bg-background border-[3px] border-border rounded-none shadow-[8px_8px_0px_0px_var(--border)] text-foreground">
         <DialogTitle className="sr-only">Abonelik Yükseltme</DialogTitle>
         <DialogDescription className="sr-only">{plan.name} paketine geçiş ve ödeme simülasyonu</DialogDescription>
 
         {/* Header */}
-        <div className="bg-black text-white p-4 border-b-[3px] border-black flex items-center justify-between">
+        <div className="bg-secondary-background text-foreground p-4 border-b-[3px] border-border flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Zap className="text-accent-muted" size={18} />
             <span className="font-heading font-black text-sm uppercase tracking-wide">
               {plan.name} Yükseltme
             </span>
           </div>
-          <button onClick={handleClose} className="text-white hover:text-accent-muted font-bold">
+          <button onClick={handleClose} className="text-foreground hover:text-accent-muted font-bold">
             <X size={18} />
           </button>
         </div>
@@ -75,10 +74,10 @@ export default function MembershipCheckoutModal({
           {step === "form" && (
             <form onSubmit={handleSubscribe} className="space-y-4">
               {/* Plan Summary */}
-              <div className="border-2 border-black bg-white p-4 flex items-center justify-between shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <div className="border-2 border-border bg-secondary-background p-4 flex items-center justify-between shadow-[3px_3px_0px_0px_var(--border)]">
                 <div>
-                  <h4 className="font-heading font-black text-lg uppercase text-black">{plan.name}</h4>
-                  <p className="text-xs text-gray-600 font-bold">
+                  <h4 className="font-heading font-black text-lg uppercase text-foreground">{plan.name}</h4>
+                  <p className="text-xs text-muted-foreground font-bold">
                     {billingCycle === "yearly" ? "Yıllık Faturalandırma (%17 İndirim)" : "Aylık Faturalandırma"}
                   </p>
                 </div>
@@ -86,7 +85,7 @@ export default function MembershipCheckoutModal({
                   <span className="font-heading font-black text-2xl text-accent-muted">
                     {price === 0 ? "Ücretsiz" : `₺${price}`}
                   </span>
-                  <span className="text-xs font-bold text-gray-500 block">
+                  <span className="text-xs font-bold text-muted-foreground block">
                     {price === 0 ? "" : billingCycle === "yearly" ? "/yıl" : "/ay"}
                   </span>
                 </div>
@@ -96,7 +95,7 @@ export default function MembershipCheckoutModal({
                 <>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-heading font-bold uppercase mb-1">
+                      <label className="block text-xs font-heading font-bold uppercase mb-1 text-foreground">
                         Kart Üzerindeki İsim
                       </label>
                       <Input
@@ -104,12 +103,12 @@ export default function MembershipCheckoutModal({
                         placeholder="Ad Soyad"
                         value={cardHolder}
                         onChange={(e) => setCardHolder(e.target.value)}
-                        className="border-2 border-black rounded-none h-10 font-bold text-xs bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        className="border-2 border-border rounded-none h-10 font-bold text-xs bg-secondary-background text-foreground shadow-[2px_2px_0px_0px_var(--border)]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-heading font-bold uppercase mb-1">
+                      <label className="block text-xs font-heading font-bold uppercase mb-1 text-foreground">
                         Kart Numarası
                       </label>
                       <div className="relative">
@@ -119,15 +118,15 @@ export default function MembershipCheckoutModal({
                           maxLength={19}
                           value={cardNumber}
                           onChange={(e) => setCardNumber(e.target.value)}
-                          className="border-2 border-black rounded-none h-10 font-mono font-bold text-xs bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] pr-10"
+                          className="border-2 border-border rounded-none h-10 font-mono font-bold text-xs bg-secondary-background text-foreground shadow-[2px_2px_0px_0px_var(--border)] pr-10"
                         />
-                        <CreditCard size={16} className="absolute right-3 top-3 text-gray-400" />
+                        <CreditCard size={16} className="absolute right-3 top-3 text-muted-foreground" />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-heading font-bold uppercase mb-1">
+                        <label className="block text-xs font-heading font-bold uppercase mb-1 text-foreground">
                           Son Kullanma
                         </label>
                         <Input
@@ -136,11 +135,11 @@ export default function MembershipCheckoutModal({
                           maxLength={5}
                           value={expiry}
                           onChange={(e) => setExpiry(e.target.value)}
-                          className="border-2 border-black rounded-none h-10 font-mono font-bold text-xs bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          className="border-2 border-border rounded-none h-10 font-mono font-bold text-xs bg-secondary-background text-foreground shadow-[2px_2px_0px_0px_var(--border)]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-heading font-bold uppercase mb-1">
+                        <label className="block text-xs font-heading font-bold uppercase mb-1 text-foreground">
                           CVV
                         </label>
                         <Input
@@ -149,32 +148,32 @@ export default function MembershipCheckoutModal({
                           maxLength={3}
                           value={cvv}
                           onChange={(e) => setCvv(e.target.value)}
-                          className="border-2 border-black rounded-none h-10 font-mono font-bold text-xs bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          className="border-2 border-border rounded-none h-10 font-mono font-bold text-xs bg-secondary-background text-foreground shadow-[2px_2px_0px_0px_var(--border)]"
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-[11px] text-gray-600 font-bold pt-2">
-                    <Lock size={13} className="text-black" />
+                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-bold pt-2">
+                    <Lock size={13} className="text-foreground" />
                     <span>256-bit SSL şifreleme ile güvenli bulut ödeme simülasyonu.</span>
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full bg-accent-muted text-white border-2 border-black rounded-none font-heading font-black text-sm uppercase py-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-black hover:text-white"
+                    className="w-full bg-accent-muted text-white border-2 border-border rounded-none font-heading font-black text-sm uppercase py-6 shadow-[4px_4px_0px_0px_var(--border)] hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white"
                   >
                     Ödemeyi Tamamla (₺{price})
                   </Button>
                 </>
               ) : (
                 <div className="py-4 text-center">
-                  <p className="text-sm font-bold text-gray-700 mb-4">
+                  <p className="text-sm font-bold text-foreground mb-4">
                     Ücretsiz paket için kredi kartı gerekmez. Anında oynamaya başlayabilirsiniz.
                   </p>
                   <Button
                     type="submit"
-                    className="w-full bg-black text-white border-2 border-black rounded-none font-heading font-black text-sm uppercase py-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-accent-muted"
+                    className="w-full bg-accent-muted text-white border-2 border-border rounded-none font-heading font-black text-sm uppercase py-6 shadow-[4px_4px_0px_0px_var(--border)] hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white"
                   >
                     Ücretsiz Hesabı Başlat
                   </Button>
@@ -185,28 +184,28 @@ export default function MembershipCheckoutModal({
 
           {step === "processing" && (
             <div className="py-16 text-center">
-              <div className="size-16 bg-accent-muted border-2 border-black mx-auto mb-4 flex items-center justify-center text-white animate-spin">
+              <div className="size-16 bg-accent-muted border-2 border-border mx-auto mb-4 flex items-center justify-center text-white animate-spin">
                 <Zap size={32} />
               </div>
-              <h4 className="font-heading font-black text-xl uppercase mb-1">Abonelik Tanımlanıyor...</h4>
-              <p className="text-xs text-gray-600 font-bold">RTX 4080 Rig slotunuz ayrılıyor.</p>
+              <h4 className="font-heading font-black text-xl uppercase mb-1 text-foreground">Abonelik Tanımlanıyor...</h4>
+              <p className="text-xs text-muted-foreground font-bold">RTX 4080 Rig slotunuz ayrılıyor.</p>
             </div>
           )}
 
           {step === "success" && (
             <div className="py-8 text-center space-y-4">
-              <div className="size-16 bg-green-500 text-white border-2 border-black mx-auto flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <div className="size-16 bg-green-500 text-white border-2 border-border mx-auto flex items-center justify-center shadow-[3px_3px_0px_0px_var(--border)]">
                 <CheckCircle2 size={36} />
               </div>
-              <h4 className="font-heading font-black text-2xl uppercase text-black">
+              <h4 className="font-heading font-black text-2xl uppercase text-foreground">
                 {plan.name} Aktif Edildi!
               </h4>
-              <p className="text-xs text-gray-600 font-medium max-w-sm mx-auto">
+              <p className="text-xs text-muted-foreground font-medium max-w-sm mx-auto">
                 Aboneliğiniz başarıyla güncellendi. Artık VIP kuyruk ve ultra düşük gecikmeli 4K akışın tadını çıkarabilirsiniz.
               </p>
               <Button
                 onClick={handleClose}
-                className="bg-accent-muted text-white border-2 border-black rounded-none font-heading font-bold text-xs uppercase px-8 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-black"
+                className="bg-accent-muted text-white border-2 border-border rounded-none font-heading font-bold text-xs uppercase px-8 py-3 shadow-[3px_3px_0px_0px_var(--border)] hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white"
               >
                 Oyunlara Göz At
               </Button>
