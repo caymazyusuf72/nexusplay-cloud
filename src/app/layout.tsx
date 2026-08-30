@@ -9,7 +9,6 @@ import ScrollToTop from "@/components/app/scroll-to-top"
 import SetStylingPref from "@/components/app/set-styling-pref"
 import { ThemeProvider } from "@/components/app/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
-import GlowCursor from "@/components/ui/glow-cursor"
 
 const fontSans = Outfit({
   subsets: ["latin"],
@@ -56,18 +55,13 @@ export default function RootLayout({
           defaultTheme="light"
           disableTransitionOnChange
         >
-          <GlowCursor
-            trailLength={32}
-            trailWidth={6}
-          >
-            <NavbarWrapper>
-              <Navbar />
-            </NavbarWrapper>
-            {children}
-            <SetStylingPref />
-            <ScrollToTop />
-            <Toaster />
-          </GlowCursor>
+          <NavbarWrapper>
+            <Navbar />
+          </NavbarWrapper>
+          {children}
+          <SetStylingPref />
+          <ScrollToTop />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

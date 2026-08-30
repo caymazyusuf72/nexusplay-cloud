@@ -497,37 +497,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FREQUENTLY ASKED QUESTIONS */}
-        <section className="mb-12">
-          <div className="mb-8">
-            <h2 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-foreground flex items-center gap-3">
-              <span className="size-4 bg-accent-muted border-2 border-border inline-block"></span>
-              SIKÇA SORULAN SORULAR
-            </h2>
-            <p className="text-xs text-muted-foreground font-medium uppercase mt-1">
-              Bulut oyunculuğu hakkında aklınıza takılan soruların cevapları
-            </p>
-          </div>
-
-          <div className="border-[3px] border-border bg-secondary-background p-6 shadow-[6px_6px_0px_0px_var(--border)]">
-            <Accordion type="single" collapsible className="w-full space-y-3">
-              {faqs.map((faq: any, idx: number) => (
-                <AccordionItem 
-                  key={idx} 
-                  value={`faq-${idx}`} 
-                  className="border-2 border-border bg-background p-3 shadow-[2px_2px_0px_0px_var(--border)]"
-                >
-                  <AccordionTrigger className="font-heading font-black text-sm uppercase text-foreground hover:no-underline py-1 text-left">
-                    {faq.q || faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs text-muted-foreground font-medium pt-2 leading-relaxed">
-                    {faq.a || faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </section>
       </motion.main>
 
       {/* Interactive Cloud Modals */}
